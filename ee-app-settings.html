@@ -1,0 +1,101 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!-- Iron -->
+
+<!-- Paper -->
+
+<!-- Shared -->
+<link rel="import" href="../js-data-behaviors/js-data-collection-behavior.html">
+<link rel="import" href="../ee-helper-behaviors/ee-helper-behavior.html">
+
+<!-- My -->
+
+<dom-module id="ee-app-settings">
+  <script>
+    Polymer({
+
+      is: 'ee-app-settings',
+
+      JSData: {
+        collectionName: 'settings'
+      },
+
+      behaviors: [
+        Elfy.JSDataCollectionBehavior,
+        Elfy.EEHelperBehavior,
+      ],
+
+      properties: {
+        settings: {
+          type: Array,
+          value() { return [] },
+          notify: true,
+        },
+
+        serviceTypes: {
+          type: Array,
+          value() { return [] },
+          notify: true,
+          computed: '_aliasKeyArr(settings, "serviceTypes", settings.*)'
+        },
+
+        conditionalSkills: {
+          type: Array,
+          value() { return [] },
+          notify: true,
+          computed: '_aliasKeyArr(settings, "conditionalSkills", settings.*)'
+        },
+
+        standardMedicalConditions: {
+          type: Array,
+          value() { return [] },
+          notify: true,
+          computed: '_aliasKeyArr(settings, "standardMedicalConditions", settings.*)'
+        },
+
+        // otherwise standardMedicalConditionRecords gets changed
+        // if the record gets changed somewhere else. readOnly doesn't help in this case.
+        recordsResetTrigger: {
+          type: Object,
+          value () { return {} }
+        },
+
+        standardMedicalConditionRecords: {
+          type: Array,
+          value() { return [] },
+          notify: true,
+          readOnly: true,
+        },
+      },
+
+      observers: [
+        '_createMcRecords(standardMedicalConditions, recordsResetTrigger.*)'
+      ],
+
+      _createMcRecords(standardMedicalConditions) {
+        if (!standardMedicalConditions) return []
+
+        var records = []
+        standardMedicalConditions.forEach((e) => {
+          var r = App.MedicalCondition.createRecord()
+          for(var k in e) r[k]=e[k];
+          records.push(r)
+        })
+
+        this._setStandardMedicalConditionRecords(records)
+      },
+
+      _aliasKeyArr(settings, key) {
+        let s = settings.find(s => s.key === key)
+        return s ? s.value : []
+      },
+
+      serviceTypeNameForKey(key) {
+        if (!key) return ''
+        var st = this.serviceTypes.find(s => s.key === key)
+        return st.name
+      }
+
+    });
+  </script>
+</dom-module>
