@@ -6,7 +6,7 @@
      "polymer": "Polymer/polymer#^1.4.0",
      "paper-elements": "^1.0.7",
      "iron-elements": "^1.0.10",
-     "ee-helper-behavior": "git+https://github.com/ElfyCares/ee-helper-behaviors",
+     "ee-helper-behaviors": "git+https://github.com/ElfyCares/ee-helper-behaviors",
      "js-data-behaviors": "git+https://github.com/ElfyCares/js-data-behaviors",
      "demo-models": "git+https://github.com/ElfyCares/demo-models",
      "ee-shared-styles": "git+https://github.com/ElfyCares/ee-shared-styles"
